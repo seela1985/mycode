@@ -9,13 +9,13 @@
         name: sl, cmatrix
     become: yes
 
-- name: Playbook - Install figlet
+- name: Playbook - Install sl
   hosts: farnsworth   # remove farnsworth from the list of available hosts
   connection: ssh     # default is to use the connection plugin ssh.py
   gather_facts: yes   # default is yes
 
   tasks:
-  - name: using yum to install sl and cmatrix
+  - name: using yum to install sl
     yum:
         name: sl
     become: yes
