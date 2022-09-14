@@ -1,0 +1,20 @@
+- name: Creating new directory and downloading file from source.
+  hosts: looneytunes
+  gather_facts: no
+
+  tasks:
+      - name: Creating a directory
+        file:
+            path: ~/challenge/
+            state: directory
+
+      - name: Downloading a file
+        get_url:
+            url: https://raw.githubusercontent.com/csfeeser/ansible_essentials/main/data/downloadme.txt
+            dest: ~/challenge/download.txt
+
+      - name: Replacing text inside file.
+        replace:
+            path: ~/challenge/download.txt
+            regexp: "PLACEHOLDER"
+            replace: "Venkat"
