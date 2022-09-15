@@ -1,0 +1,9 @@
+- name: Debug test
+  hosts: local
+
+  tasks:
+  - name: Prints two lines of messages, but only if there is an environment value set
+    debug:
+     msg:
+      - "Provisioning based on YOUR_KEY which is:"
+      - "These servers were built using the password of lease retain this for later use."

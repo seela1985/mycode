@@ -1,0 +1,59 @@
+---
+- name: Thursday morning challenge
+  hosts: bender
+  connection: ssh
+  gather_facts: no
+  become: yes
+
+  vars_prompt:
+      - name: mc_server_link
+        prompt: "Enter mc_server_link "
+  tasks:
+
+  - name: Install apps for minecraft server
+    block:
+        - name: Install additional apps via apt
+          apt:
+            name:
+               - fail2ban # enables the linux host to ban IPs with suspicious SSH activity
+            state: present
+    rescue:
+        - name: UnInstalling App
+          apt:
+            name:
+               - fail2ban
+            state: absent
+
+        - name: App Installation Failed
+          fail:
+              msg: "App has been uninstalled.."
+
+  - name: Copy fail2ban (ssh protection)
+    copy:
+      content: "get off my dang server"
+      dest: /etc/fail2ban/jail.conf
+    notify:
+      - Restart_fail2ban
+    tags:
+      - restart_app
+
+  - name: Add a directory
+    file:
+      path: "/home/{{ ansible_user }}/minecraft"
+      state: directory
+    tags:
+      - download_app
+      - create_dir
+      
+  - name: Download minecraft server
+    get_url:
+      url: "{{ mc_server_link }}"
+      dest: /home/{{ ansible_user }}/minecraft/minecraft_server.jar
+    tags:
+      - download_app
+
+  handlers:
+  - name: Restart_fail2ban
+    service:
+      name: fail2ban
+      state: restarted
