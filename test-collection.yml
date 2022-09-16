@@ -1,0 +1,13 @@
+---
+- name: Testing my new module
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Testing my custom module to interact with NASA imagery and Google Earth
+    nasa_apod:
+      date: 2019-01-01
+      hd: True
+      apikey: DEMO_KEY # replace with your key
+      dest: /home/student/static/example1.png   # location to download image
+
